@@ -3,25 +3,26 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class YoutubedlExecutor extends SwingWorker<Boolean, Integer> {
-    private String url;
+    private ArrayList<String> arguments;
     private File directory;
 
-    YoutubedlExecutor(File directory, String url) {
+    YoutubedlExecutor(File directory, ArrayList<String> arguments) {
         this.directory = directory;
-        this.url = url;
+        this.arguments = arguments;
     }
 
     @Override
     protected Boolean doInBackground() {
         boolean done = false;
 
-        File ytdlpath = new File("youtube-dl/yt-dlp.exe");
+        String ytdlpath = new File("youtube-dl/yt-dlp.exe").getAbsolutePath();
 
-        ProcessBuilder pB = new ProcessBuilder(ytdlpath.getAbsolutePath(), url);
+        ProcessBuilder pB = new ProcessBuilder(arguments);
         pB.directory(directory);
 
         Pattern percentagePattern = Pattern.compile("\\[download\\]\\s+(\\d+\\.\\d+)(?=%)");
